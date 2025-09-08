@@ -1,25 +1,28 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import BlogDetail from '../components/BlogDetail.vue';
-import Mirako from '../views/MirakoBlog.vue';
+import { createRouter, createWebHistory } from "vue-router";
+import BlogDetail from "../components/BlogDetail.vue";
+import Mirako from "../views/MirakoBlog.vue";
 
 const routes = [
   {
-    path: '/posts',
-    name: 'home',
+    path: "/",
+    name: "homepage",
+    redirect: "/posts",
+  },
+  {
+    path: "/posts",
+    name: "posts",
     component: Mirako,
-    children: [
-      {
-        path: ':id',
-        name: 'post',
-        component: BlogDetail
-      }
-    ]
-  }
-]
+  },
+  {
+    path: "/posts/:id",
+    name: "post",
+    component: BlogDetail,
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
