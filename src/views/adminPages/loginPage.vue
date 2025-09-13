@@ -38,13 +38,24 @@ const handleLogin = async () => {
       password: password.value,
     })
   } catch (err) {
-    error.value = '用户名或密码错误，请重试。'
-    console.error(err)
+    if (err.response) {
+      if (err.response.status === 401) {
+        error.value = "invalid credentials";
+      } else {
+        error.value = err.response.data?.message || "Unknown error";
+      }
+      console.warn(`login failed: [${err.response.status}]: ${error.value}`);
+    } else if (err.request) {
+      error.value = "No response from server, please check your internet or try again later.";
+      console.warn("Login failed, no response from server.");
+    } else {
+      error.value = "网络异常，请稍后重试。";
+      console.warn("登录异常：", err.message);
+    }
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

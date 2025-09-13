@@ -7,14 +7,11 @@ export const useAuthStore = defineStore("auth", () => {
   const token = ref(localStorage.getItem("token"));
   const user = ref(JSON.parse(localStorage.getItem("user")));
 
-  // getters
   const isAuthenticated = computed(() => !!token.value);
 
-  // actions
   function setToken(newToken) {
     token.value = newToken;
     localStorage.setItem("token", newToken);
-    // 设置 Axios 的请求头
     api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
   }
 
@@ -37,17 +34,15 @@ export const useAuthStore = defineStore("auth", () => {
       const { token: newToken, userId } = loginResponse.data;
 
       if (!newToken || !userId) {
-        throw new Error("登录失败，未获取到 Token 或 User ID");
+        throw new Error("login");
       }
 
       setToken(newToken);
 
-      const meResponse = await api.post("/me", { id: userId });
+      const meResponse = await api.get("/me");
 
-      // 4. 设置用户信息，这一步和之前一样
       setUser(meResponse.data);
 
-      // 5. 跳转到个人资料页
       await router.push("/admin/profile");
     } catch (error) {
       clearAuth();

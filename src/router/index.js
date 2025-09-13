@@ -16,7 +16,7 @@ const routes = [
     component: Mirako,
   },
   {
-    path: "/posts/:id",
+    path: "/posts/:title",
     name: "post",
     component: BlogDetail,
   },
@@ -42,7 +42,7 @@ router.beforeEach((to, from, next) => {
     const requiresAuth = to.path === '/admin';
 
     if (requiresAuth && !token) {
-        alert('pls login first')
+        alert('please login first')
         next('/login');
     } else if (token && to.path === '/login') {
         next('/admin');

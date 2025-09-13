@@ -1,9 +1,25 @@
-import axios from "axios";
-const API_BASE_URL = "http://localhost:3000/api";
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-});
+import api from "./index";
 
-export const getAllPosts = () => apiClient.get('/posts/all');
+const postsApi = {
+  async getAll() {
+    try {
+      const res = await api.get("/posts/all");
+      return res.data;
+    } catch (err) {
+      console.error("获取所有文章失败：", err.message);
+      return null;
+    }
+  },
 
-export const getPostById = (id) => apiClient.get(`/posts/${id}`);
+  async getById(id) {
+    try {
+      const res = await api.get(`/posts/${id}`);
+      return res.data;
+    } catch (err) {
+      console.error(`获取文章失败 (id=${id})：`, err.message);
+      return null;
+    }
+  },
+};
+
+export default postsApi;

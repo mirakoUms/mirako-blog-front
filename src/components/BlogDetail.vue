@@ -11,19 +11,21 @@
 </template>
 
 <script setup>
-import { getPostById } from '../api/post';
+import postsApi from '../api/post';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const post = ref(null);
 const route = useRoute();
+const error = ref(null);
 
 onMounted(async () => {
     try {
-      const id = route.params.id;
-      const response = await getPostById(id);
-      post.value = response.data.data;
+      const title = route.params.title;
+      const response = await postsApi.getById(title);
+      post.value = response.data;
     } catch (err) {
+      error.value = "加载失败";
       throw new Error('无法加载文章');
     }
 });

@@ -10,21 +10,17 @@
 </template>
 
 <script setup>
-import { getAllPosts } from '../api/post';
+import postsApi from '../api/post';
 import { ref, onMounted } from 'vue';
 
 const posts = ref([]);
 
 onMounted(async () => {
   try {
-    const response = await getAllPosts();
-    posts.value = response.data.data;
+    const response = await postsApi.getAll();
+    posts.value = response.data;
   } catch (err) {
     console.error(err);
   }
 });
 </script>
-
-<style scoped>
-/* 添加一些样式 */
-</style>
