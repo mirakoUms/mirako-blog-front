@@ -30,7 +30,7 @@ import { ref, onMounted } from 'vue';
 
 const posts = ref([]);
 const page = ref(1);
-const limit = ref(10);
+const limit = ref(5);
 const totalPages = ref(1);
 
 const fetchPosts = async () => {

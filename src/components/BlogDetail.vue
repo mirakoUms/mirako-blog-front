@@ -7,6 +7,7 @@
     </div>
     <div v-else-if="error">{{ error }}</div>
     <div v-else>加载中...</div>
+    <router-link :to="`/posts`">TOP</router-link>
   </div>
 </template>
 
@@ -20,18 +21,14 @@ const route = useRoute();
 const error = ref(null);
 
 onMounted(async () => {
-    try {
-      const title = route.params.title;
-      const response = await postsApi.getById(title);
-      post.value = response.data;
-    } catch (err) {
-      error.value = "加载失败";
-      throw new Error('无法加载文章');
-    }
+  try {
+    const title = route.params.title;
+    const response = await postsApi.getById(title);
+    post.value = response.data;
+  } catch (err) {
+    error.value = "加载失败";
+    throw new Error('无法加载文章');
+  }
 });
 
 </script>
-
-<style scoped>
-/* 添加一些样式 */
-</style>
