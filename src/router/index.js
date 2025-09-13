@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import BlogDetail from "../components/BlogDetail.vue";
 import Mirako from "../views/MirakoBlog.vue";
-import profilePage from "@/views/adminPages/admin/profilePage.vue"
+import CategoryPage from "@/views/CategoryPage.vue";
+import CategoryDetail from "@/components/CategoryDetail.vue";
+import profilePage from "@/views/adminPages/admin/profilePage.vue";
 import loginPage from "@/views/adminPages/loginPage.vue";
 
 const routes = [
@@ -21,6 +23,16 @@ const routes = [
     component: BlogDetail,
   },
   {
+    path: "/category",
+    name: "Categories",
+    component: CategoryPage,
+  },
+  {
+    path: "/category/:categoryName",
+    name: "Category",
+    component: CategoryDetail,
+  },
+  {
     path: "/login",
     name: "login",
     component: loginPage,
@@ -38,17 +50,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem('jwt_token');
-    const requiresAuth = to.path === '/admin';
+  const token = localStorage.getItem("jwt_token");
+  const requiresAuth = to.path === "/admin";
 
-    if (requiresAuth && !token) {
-        alert('please login first')
-        next('/login');
-    } else if (token && to.path === '/login') {
-        next('/admin');
-    } else {
-        next();
-    }
+  if (requiresAuth && !token) {
+    alert("please login first");
+    next("/login");
+  } else if (token && to.path === "/login") {
+    next("/admin");
+  } else {
+    next();
+  }
 });
 
 export default router;
