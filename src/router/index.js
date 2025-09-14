@@ -78,10 +78,6 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("jwt_token");
   const requiresAuth = to.path.startsWith("/admin");
 
-  console.log(
-    `Stored Token: ${token}, current url: ${to.path}, token auth requied:${requiresAuth}`
-  );
-
   if (requiresAuth && !token) {
     alert("please login first");
     next("/login");

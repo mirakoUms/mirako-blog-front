@@ -1,7 +1,29 @@
 <template>
     <div>
         <h3>Posts List</h3>
+        <button @click="showCreateDialog = true">New Post</button>
 
+        <div v-if="showCreateDialog" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+            <h3>Create New Post</h3>
+            <form @submit.prevent="createPost">
+            <div>
+                <label for="title">Title:</label>
+                <input id="title" v-model="newPost.title" required />
+            </div>
+            <div>
+                <label for="summary">Summary:</label>
+                <textarea id="summary" v-model="newPost.summary" required></textarea>
+            </div>
+            <div>
+                <label for="thumbnail">Thumbnail URL:</label>
+                <input id="thumbnail" v-model="newPost.thumbnail_url" />
+            </div>
+            <div style="margin-top: 10px;">
+                <button type="submit">Confirm</button>
+                <button type="button" @click="showCreateDialog = false">Cancel</button>
+            </div>
+            </form>
+        </div>
         <table style="width: auto; border-collapse: collapse; font-size: xx-small;">
             <thead>
                 <tr>
@@ -62,20 +84,30 @@
         </div>
     </div>
 </template>
-
 <script setup>
-import postsApi from '../../../api/post';
 import { ref, onMounted } from 'vue';
+import postsApi from '../../../api/post';
+import editPostApi from '../../../api/editPost';
+
 const posts = ref([]);
 const page = ref(1);
 const limit = ref(10);
 const totalPages = ref(1);
+const showCreateDialog = ref(false);
+
+const newPost = ref({
+    title: '',
+    summary: '',
+    tag_names: '',
+    thumbnail_url: ''
+});
+
 const fetchPosts = async () => {
     try {
         const response = await postsApi.getAll(page.value, limit.value);
         posts.value = response.data;
     } catch (err) {
-        console.error(err);
+        console.error('Error fetching posts:', err);
     }
 };
 
@@ -84,7 +116,7 @@ const fetchTotalPages = async () => {
         const res = await postsApi.getTotalPosts();
         totalPages.value = Math.ceil(res.count / limit.value);
     } catch (err) {
-        console.error(err);
+        console.error('Error fetching total pages:', err);
     }
 };
 
@@ -102,15 +134,36 @@ const nextPage = () => {
     }
 };
 
+const deletePost = async (id) => {
+    if (confirm('Are you sure you want to delete this post?')) {
+        try {
+            await editPostApi.deletePostById(id);
+            fetchPosts();
+        } catch (err) {
+            console.error('Error deleting post:', err);
+        }
+    }
+};
+
+const createPost = async () => {
+    try {
+        await editPostApi.createPost(newPost.value);
+        showCreateDialog.value = false;
+        fetchPosts();
+        newPost.value = {
+            title: '',
+            summary: '',
+            category_name: '',
+            tag_names: '',
+            thumbnail_url: ''
+        };
+    } catch (err) {
+        console.error('Error creating post:', err);
+    }
+};
+
 onMounted(async () => {
     await fetchTotalPages();
     fetchPosts();
 });
-
-async function deletePost(id) {
-    if (confirm('确定要删除这篇文章吗？')) {
-        await postsApi.deletePostById(id);
-        fetchPosts();
-    }
-}
 </script>

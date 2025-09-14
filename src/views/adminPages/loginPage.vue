@@ -4,11 +4,11 @@
     <form @submit.prevent="handleLogin">
       <div>
         <label for="username">用户名:</label>
-        <input type="text" id="username" v-model="username" required />
+        <input type="text" id="username" v-model="username" required  autocomplete="username"/>
       </div>
       <div>
         <label for="password">密码:</label>
-        <input type="password" id="password" v-model="password" required />
+        <input type="password" id="password" v-model="password" required autocomplete="current-password"/>
       </div>
       <button type="submit" :disabled="loading">
         {{ loading ? '登录中...' : '登录' }}

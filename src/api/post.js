@@ -32,16 +32,6 @@ const postsApi = {
       return null;
     }
   },
-
-  async deletePostById(id) {
-    try {
-      const res = await api.delete(`/edit-posts/delete/${id}`);
-      return res.data;
-    } catch (err) {
-      console.error(`delete failed`, err.message);
-      return null;
-    }
-  },
 };
 
 export default postsApi;
