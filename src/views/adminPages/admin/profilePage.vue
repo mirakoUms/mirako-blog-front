@@ -1,15 +1,15 @@
 <template>
   <div class="profile-container">
-    <h2>个人资料</h2>
+    <h3>ME</h3>
     <div v-if="authStore.user">
-      <p><strong>ID:</strong> {{ authStore.user.user.id }}</p>
-      <p><strong>用户名:</strong> {{ authStore.user.user.username }}</p>
-      <p><strong>邮箱:</strong> {{ authStore.user.user.email }}</p>
+      <p><strong>UID:</strong> {{ authStore.user.user.id }}</p>
+      <p><strong>username:</strong> {{ authStore.user.user.username }}</p>
+      <p><strong>email:</strong> {{ authStore.user.user.email }}</p>
       </div>
     <div v-else>
-      <p>正在加载用户信息...</p>
+      <p>loading info...</p>
     </div>
-    <button @click="handleLogout">退出登录</button>
+    <button @click="handleLogout">logout</button>
   </div>
 </template>
 

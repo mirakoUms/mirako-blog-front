@@ -11,7 +11,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   function setToken(newToken) {
     token.value = newToken;
-    localStorage.setItem("token", newToken);
+    localStorage.setItem("jwt_token", newToken);
     api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
   }
 
@@ -23,7 +23,7 @@ export const useAuthStore = defineStore("auth", () => {
   function clearAuth() {
     token.value = null;
     user.value = null;
-    localStorage.removeItem("token");
+    localStorage.removeItem("jwt_token");
     localStorage.removeItem("user");
     delete api.defaults.headers.common["Authorization"];
   }

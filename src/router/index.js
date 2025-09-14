@@ -3,8 +3,11 @@ import BlogDetail from "../components/BlogDetail.vue";
 import Mirako from "../views/MirakoBlog.vue";
 import CategoryPage from "@/views/CategoryPage.vue";
 import CategoryDetail from "@/components/CategoryDetail.vue";
+import adminHome from "@/views/adminPages/admin/AdminLayout.vue";
 import profilePage from "@/views/adminPages/admin/profilePage.vue";
 import loginPage from "@/views/adminPages/loginPage.vue";
+import postsManage from "@/views/adminPages/admin/postsManage.vue";
+import editPage from "@/components/admin/EditPage.vue";
 
 const routes = [
   {
@@ -38,9 +41,31 @@ const routes = [
     component: loginPage,
   },
   {
-    path: "/admin/profile",
-    name: "admin",
-    component: profilePage,
+    path: "/admin",
+    name: "Admin",
+    component: adminHome,
+    redirect: "/admin/profile",
+    children: [
+      {
+        path: "profile",
+        name: "Profile",
+        component: profilePage,
+        meta: { title: "Profile" },
+      },
+      {
+        path: "posts",
+        name: "Posts",
+        component: postsManage,
+        meta: { title: "Posts" },
+      },
+      {
+        path: "posts/edit/:id",
+        name: "Edit",
+        component: editPage,
+        meta: { title: "Edit" },
+        props: true,
+      },
+    ],
   },
 ];
 
@@ -51,7 +76,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("jwt_token");
-  const requiresAuth = to.path === "/admin";
+  const requiresAuth = to.path.startsWith("/admin");
+
+  console.log(
+    `Stored Token: ${token}, current url: ${to.path}, token auth requied:${requiresAuth}`
+  );
 
   if (requiresAuth && !token) {
     alert("please login first");
