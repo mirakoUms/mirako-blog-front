@@ -15,6 +15,15 @@ const categoryApi = {
       return null;
     }
   },
+  async getAllCategory() {
+    try {
+      const res = await api.get("/category/all");
+      return res.data;
+    } catch (err) {
+      console.error("fetch category failed:", err.message);
+      return null;
+    }
+  },
 };
 
 export default categoryApi;
