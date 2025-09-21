@@ -44,14 +44,14 @@
                         {{ item.username }}
                     </td>
                     <td style="padding: 8px; white-space: nowrap;">
-                        <router-link :to="`/posts/${item.id}`">{{ item.title }}</router-link>
+                        <router-link :to="`/posts/${item.id}`" target="_blank">{{ item.title }}</router-link>
                     </td>
                     <td style="padding: 8px; white-space: nowrap;">
                         {{ item.summary }}
                     </td>
                     <td style="padding: 8px; white-space: nowrap;">
-                        <router-link :to="`/category/${item.category_name}`">
-                            <span style="border-radius: 5px; background-color: bisque; padding: 2px 6px;">
+                        <router-link :to="`/category/${item.category_name}`" target="_blank">
+                            <span>
                                 {{ item.category_name }}
                             </span>
                         </router-link>
