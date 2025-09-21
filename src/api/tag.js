@@ -19,6 +19,15 @@ const tagApi = {
       return null;
     }
   },
+  async createTag(tagData) {
+    try {
+      const res = await api.post("/tag/new-tag", tagData);
+      return res.data;
+    } catch (err) {
+      console.error("Failed to create tag:", err.message);
+      return null;
+    }
+  }
 };
 
 export default tagApi;

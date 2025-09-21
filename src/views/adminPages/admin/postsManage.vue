@@ -3,6 +3,7 @@
         <h3>Posts List</h3>
         <button @click="showCreatePostDialog = true">New Post</button>
         <button @click="showCreateCategoryDialog = true">New Category</button>
+        <button @click="showCreateTagDialog = true">New Tag</button>
 
         <div v-if="showCreatePostDialog"
             style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
@@ -38,6 +39,21 @@
                 <div style="margin-top: 10px;">
                     <button type="submit">Confirm</button>
                     <button type="button" @click="showCreateCategoryDialog = false">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div v-if="showCreateTagDialog"
+            style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+            <h3>Create New Tag</h3>
+            <form @submit.prevent="createTag">
+                <div>
+                    <label for="tag_name">Tag Name:</label>
+                    <input id="tag_name" v-model="newTag.name" required />
+                </div>
+                <div style="margin-top: 10px;">
+                    <button type="submit">Confirm</button>
+                    <button type="button" @click="showCreateTagDialog = false">Cancel</button>
                 </div>
             </form>
         </div>
@@ -103,6 +119,7 @@ import { ref, onMounted } from 'vue';
 import postsApi from '../../../api/post';
 import editPostApi from '../../../api/editPost';
 import categoryApi from '../../../api/category';
+import tagApi from '../../../api/tag';
 
 const posts = ref([]);
 const page = ref(1);
@@ -110,6 +127,7 @@ const limit = ref(10);
 const totalPages = ref(1);
 const showCreatePostDialog = ref(false);
 const showCreateCategoryDialog = ref(false);
+const showCreateTagDialog = ref(false);
 
 const newPost = ref({
     title: '',
@@ -119,6 +137,10 @@ const newPost = ref({
 });
 
 const newCategory = ref({
+    name: ''
+});
+
+const newTag = ref({
     name: ''
 });
 
@@ -196,8 +218,23 @@ const createCategory = async () => {
     }
 };
 
-onMounted(async () => {
-    await fetchTotalPages();
-    fetchPosts();
+const createTag = async () => {
+    try {
+        const res = await tagApi.createTag(newTag.value);
+        alert(res.message);
+        showCreateTagDialog.value = false;
+        fetchPosts();
+        newCategory.value = {
+            name: ''
+        };
+    } catch (err) {
+        alert('Error creating category: ' + err);
+    }
+};
+
+onMounted(() => {
+    Promise.all([fetchTotalPages(), fetchPosts()]).catch(err => {
+        console.error('Error during initialization:', err);
+    });
 });
 </script>
