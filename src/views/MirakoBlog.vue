@@ -6,7 +6,7 @@
       <li v-for="item in posts" :key="item.id">
         <router-link :to="`/posts/${item.id}`">{{ item.title }}</router-link>
         &nbsp;
-        <router-link :to="`/category/${item.category_name}`">
+        <router-link :to="`/categories/${item.category_name}`">
           <span style="border-radius: 5px; background-color: bisque;">
             {{ item.category_name }}
           </span>

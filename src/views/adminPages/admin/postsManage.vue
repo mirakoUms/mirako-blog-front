@@ -1,29 +1,47 @@
 <template>
     <div>
         <h3>Posts List</h3>
-        <button @click="showCreateDialog = true">New Post</button>
+        <button @click="showCreatePostDialog = true">New Post</button>
+        <button @click="showCreateCategoryDialog = true">New Category</button>
 
-        <div v-if="showCreateDialog" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <div v-if="showCreatePostDialog"
+            style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
             <h3>Create New Post</h3>
             <form @submit.prevent="createPost">
-            <div>
-                <label for="title">Title:</label>
-                <input id="title" v-model="newPost.title" required />
-            </div>
-            <div>
-                <label for="summary">Summary:</label>
-                <textarea id="summary" v-model="newPost.summary" required></textarea>
-            </div>
-            <div>
-                <label for="thumbnail">Thumbnail URL:</label>
-                <input id="thumbnail" v-model="newPost.thumbnail_url" />
-            </div>
-            <div style="margin-top: 10px;">
-                <button type="submit">Confirm</button>
-                <button type="button" @click="showCreateDialog = false">Cancel</button>
-            </div>
+                <div>
+                    <label for="title">Title:</label>
+                    <input id="title" v-model="newPost.title" required />
+                </div>
+                <div>
+                    <label for="summary">Summary:</label>
+                    <textarea id="summary" v-model="newPost.summary" required></textarea>
+                </div>
+                <div>
+                    <label for="thumbnail">Thumbnail URL:</label>
+                    <input id="thumbnail" v-model="newPost.thumbnail_url" />
+                </div>
+                <div style="margin-top: 10px;">
+                    <button type="submit">Confirm</button>
+                    <button type="button" @click="showCreatePostDialog = false">Cancel</button>
+                </div>
             </form>
         </div>
+
+        <div v-if="showCreateCategoryDialog"
+            style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+            <h3>Create New Category</h3>
+            <form @submit.prevent="createCategory">
+                <div>
+                    <label for="category_name">Category Name:</label>
+                    <input id="category_name" v-model="newCategory.name" required />
+                </div>
+                <div style="margin-top: 10px;">
+                    <button type="submit">Confirm</button>
+                    <button type="button" @click="showCreateCategoryDialog = false">Cancel</button>
+                </div>
+            </form>
+        </div>
+
         <table style="width: auto; border-collapse: collapse; font-size: xx-small;">
             <thead>
                 <tr>
@@ -50,11 +68,7 @@
                         {{ item.summary }}
                     </td>
                     <td style="padding: 8px; white-space: nowrap;">
-                        <router-link :to="`/category/${item.category_name}`" target="_blank">
-                            <span>
-                                {{ item.category_name }}
-                            </span>
-                        </router-link>
+                        {{ item.category_name }}
                     </td>
                     <td style="padding: 8px; white-space: nowrap;">
                         <span style="font-size: small; color: gray;">{{ item.tag_names }}</span>
@@ -70,7 +84,7 @@
                     </td>
                     <td>
                         <router-link :to="{ name: 'Edit', params: { id: item.id } }">Edit</router-link>&nbsp;
-                        <button @click="deletePost(item.id)"  title="delele current post">Delete</button>
+                        <button @click="deletePost(item.id)" title="delele current post">Delete</button>
                     </td>
                 </tr>
             </tbody>
@@ -88,18 +102,24 @@
 import { ref, onMounted } from 'vue';
 import postsApi from '../../../api/post';
 import editPostApi from '../../../api/editPost';
+import categoryApi from '../../../api/category';
 
 const posts = ref([]);
 const page = ref(1);
 const limit = ref(10);
 const totalPages = ref(1);
-const showCreateDialog = ref(false);
+const showCreatePostDialog = ref(false);
+const showCreateCategoryDialog = ref(false);
 
 const newPost = ref({
     title: '',
     summary: '',
     tag_names: '',
     thumbnail_url: ''
+});
+
+const newCategory = ref({
+    name: ''
 });
 
 const fetchPosts = async () => {
@@ -148,7 +168,7 @@ const deletePost = async (id) => {
 const createPost = async () => {
     try {
         await editPostApi.createPost(newPost.value);
-        showCreateDialog.value = false;
+        showCreatePostDialog.value = false;
         fetchPosts();
         newPost.value = {
             title: '',
@@ -159,6 +179,20 @@ const createPost = async () => {
         };
     } catch (err) {
         console.error('Error creating post:', err);
+    }
+};
+
+const createCategory = async () => {
+    try {
+        const res = await categoryApi.createCategory(newCategory.value);
+        alert(res.message);
+        showCreateCategoryDialog.value = false;
+        fetchPosts();
+        newCategory.value = {
+            name: ''
+        };
+    } catch (err) {
+        alert('Error creating category: ' + err);
     }
 };
 

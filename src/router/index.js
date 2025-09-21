@@ -3,6 +3,8 @@ import BlogDetail from "../components/BlogDetail.vue";
 import Mirako from "../views/MirakoBlog.vue";
 import CategoryPage from "@/views/CategoryPage.vue";
 import CategoryDetail from "@/components/CategoryDetail.vue";
+import TagPage from "@/views/TagPage.vue";
+import TagDetail from "@/components/TagDetail.vue";
 import adminHome from "@/views/adminPages/admin/AdminLayout.vue";
 import profilePage from "@/views/adminPages/admin/profilePage.vue";
 import loginPage from "@/views/adminPages/loginPage.vue";
@@ -26,14 +28,24 @@ const routes = [
     component: BlogDetail,
   },
   {
-    path: "/category",
+    path: "/categories",
     name: "Categories",
     component: CategoryPage,
   },
   {
-    path: "/category/:categoryName",
+    path: "/categories/:categoryName",
     name: "Category",
     component: CategoryDetail,
+  },
+  {
+    path: "/tags",
+    name: "Tags",
+    component: TagPage,
+  },
+  {
+    path: "/tags/:tagName",
+    name: "Tag",
+    component: TagDetail,
   },
   {
     path: "/login",

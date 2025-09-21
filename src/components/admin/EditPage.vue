@@ -14,8 +14,8 @@
 
         GENRE:
         <select required name="category" id="category" v-model="modifiedPost.category_id">
-          <option v-for="category in categories" :key="category.id" :value="category.id">
-            {{ category.name }}
+          <option v-for="category in categories" :key="category.category_id" :value="category.category_id">
+            {{ category.category_name }}
           </option>
         </select>
         <br><br>
@@ -52,7 +52,7 @@ const getPostInfo = async () => {
 
     modifiedPost.value = {
       ...post.value,
-      category_id: categories.value.find(c => c.name === post.value.category_name)?.id || ""
+      category_id: categories.value.find(c => c.category_name === post.value.category_name)?.category_id || ""
     };
   } catch (err) {
     console.error(err);
@@ -90,7 +90,7 @@ const savePost = async () => {
 
 onMounted(async () => {
   try {
-    await Promise.all([getAllCategory(), getPostInfo()]);
+    await Promise.all([getAllCategory(), getPostInfo()]);    
   } catch (err) {
     console.error("Error during initialization:", err);
   }
