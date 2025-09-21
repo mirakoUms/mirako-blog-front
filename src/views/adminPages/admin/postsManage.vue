@@ -50,7 +50,7 @@
                     <th style="text-align: left; padding: 8px;">summary</th>
                     <th style="text-align: left; padding: 8px;">genre</th>
                     <th style="text-align: left; padding: 8px;">tags</th>
-                    <th style="text-align: left; padding: 8px;">PIC</th>
+                    <th style="text-align: left; padding: 8px;">image</th>
                     <th style="text-align: left; padding: 8px;">created</th>
                     <th style="text-align: left; padding: 8px;">updated</th>
                     <th style="text-align: left; padding: 8px;">opration</th>
