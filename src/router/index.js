@@ -10,12 +10,18 @@ import profilePage from "@/views/adminPages/admin/profilePage.vue";
 import loginPage from "@/views/adminPages/loginPage.vue";
 import postsManage from "@/views/adminPages/admin/postsManage.vue";
 import editPage from "@/components/admin/EditPage.vue";
+import TestPage from "@/views/TestPage.vue";
 
 const routes = [
   {
     path: "/",
     name: "homepage",
     redirect: "/posts",
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: TestPage,
   },
   {
     path: "/posts",

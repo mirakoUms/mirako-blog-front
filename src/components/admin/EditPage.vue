@@ -20,6 +20,14 @@
         </select>
         <br><br>
 
+        Tags:
+        <select id="tags" name="tags" multiple>
+          <option value="vue">Vue</option>
+          <option value="react">React</option>
+          <option value="angular">Angular</option>
+        </select>
+        <br><br>
+
         Post CONTENT:
         <textarea v-model="modifiedPost.content"></textarea>
         <br><br>
@@ -90,7 +98,7 @@ const savePost = async () => {
 
 onMounted(async () => {
   try {
-    await Promise.all([getAllCategory(), getPostInfo()]);    
+    await Promise.all([getAllCategory(), getPostInfo()]);
   } catch (err) {
     console.error("Error during initialization:", err);
   }

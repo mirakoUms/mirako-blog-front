@@ -1,9 +1,8 @@
 <template>
   <div>
     <h1>List of Genres</h1>
-    {{ posts }}
     <ul>
-      <li v-for="item in posts" :key="item.id">
+      <li v-for="item in categories.filter(category => category.post_count > 0)" :key="item.id">
         <router-link :to="`/posts/${item.id}`">{{ item.title }}</router-link>
         &nbsp;
         <router-link :to="`/categories/${item.category_name}`">
@@ -23,12 +22,12 @@
 import categoryApi from '../api/category';
 import { ref, onMounted } from 'vue';
 
-const posts = ref([]);
+const categories = ref([]);
 
 onMounted(async () => {
   try {
     const response = await categoryApi.getAllCategory();
-    posts.value = response.data;
+    categories.value = response.data;
   } catch (err) {
     console.error(err);
   }
