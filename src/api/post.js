@@ -32,6 +32,15 @@ const postsApi = {
       return null;
     }
   },
-};
 
+  async checkPostExistence(title) {
+    try {
+      const res = await api.get(`/posts/check-if-exists/${title}`);
+      return res.data.exists;
+    } catch (err) {
+      console.error(`检查文章存在失败 (title=${title})：`, err.message);
+      return null;
+    }
+  },
+};
 export default postsApi;

@@ -92,7 +92,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach( (to, from, next) => {
   const token = localStorage.getItem("jwt_token");
   const requiresAuth = to.path.startsWith("/admin");
 
