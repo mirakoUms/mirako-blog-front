@@ -2,15 +2,15 @@
   <div class="login-container">
     <h2>登录</h2>
     <form @submit.prevent="handleLogin">
-      <div>
-        <label for="username">用户名:</label>
-        <input type="text" id="username" v-model="username" required  autocomplete="username"/>
+      <div class="form-group">
+        <label for="username">用户名</label>
+        <input type="text" id="username" v-model="username" required autocomplete="username" />
       </div>
-      <div>
-        <label for="password">密码:</label>
-        <input type="password" id="password" v-model="password" required autocomplete="current-password"/>
+      <div class="form-group">
+        <label for="password">密码</label>
+        <input type="password" id="password" v-model="password" required autocomplete="current-password" />
       </div>
-      <button type="submit" :disabled="loading">
+      <button type="submit" :disabled="loading" class="login-button">
         {{ loading ? '登录中...' : '登录' }}
       </button>
       <p v-if="error" class="error-message">{{ error }}</p>
@@ -58,4 +58,59 @@ const handleLogin = async () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.login-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.login-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:disabled {
+  cursor: not-allowed;
+}
+
+.error-message {
+  margin-top: 10px;
+  color: #d9534f;
+  text-align: center;
+}
+</style>

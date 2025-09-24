@@ -30,6 +30,11 @@ const mainChildrenRoutes = [
     component: () => import("@/views/TestPage.vue"),
   },
   {
+    path: "/error",
+    name: "Error",
+    component: () => import("@/views/ERROR.vue"),
+  },
+  {
     path: "/index",
     name: "Index",
     alias: "/",
@@ -78,7 +83,7 @@ const mainChildrenRoutes = [
     meta: { title: "Tags Detail" },
     component: () => import("@/components/TagDetail.vue"),
   },
-]
+];
 
 const routes = [
   {
@@ -101,11 +106,6 @@ const routes = [
     component: () => import("@/views/adminPages/admin/AdminLayout.vue"),
     redirect: "/admin/profile",
     children: adminChildrenRoutes,
-  },
-  {
-    path: "/error",
-    name: "Error",
-    component: () => import("@/views/ERROR.vue"),
   },
 ];
 

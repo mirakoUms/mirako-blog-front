@@ -19,3 +19,38 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 const childRoutes = route.matched[0].children.filter(route => route.name !== "Edit");
 </script>
+
+<style scoped>
+.admin-layout {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+nav {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+router-link {
+  text-decoration: none;
+  color: #333;
+}
+
+
+router-link.active-class {
+  font-weight: bold;
+}
+
+main {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+}
+</style>
