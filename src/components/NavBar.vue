@@ -2,7 +2,7 @@
     <nav class="nav">
         <div class="nav-container" v-if="!isMobile">
             <router-link v-for="route in childRoutes" :key="route.name" :to="route.path" class="nav-link" 
-            :class="{ active: route.name === router.currentRoute.value.name }">{{ route.meta.title }}</router-link>
+            :class="{ active: route.name === router.currentRoute.value.name || (route.name === 'Homepage' && router.currentRoute.value.name === 'Index') }">{{ route.meta.title }}</router-link>
         </div>
 
         <div class="nav-container-mobile-menu" @click="isMenuOpen = !isMenuOpen" v-if="isMobile">
@@ -27,7 +27,7 @@ import { ref, onMounted } from "vue";
 
 const isMobile = ref(window.innerWidth <= 768);
 const router = useRouter();
-const childRoutes = router.getRoutes().filter(route => route.meta.title === 'Home' || route.meta.title === 'Posts').reverse();
+const childRoutes = router.getRoutes().filter(route => route.meta.title === 'Home' || route.meta.title === 'Posts' || route.meta.title === 'About').reverse();
 const isMenuOpen = ref(false);
 
 window.addEventListener("resize", () => {
@@ -100,7 +100,7 @@ onMounted(() => {
 }
 
 .nav-link:hover {
-    transform: translateY(-2px);
+    text-decoration: underline 2px;
 }
 
 .nav-link.active {

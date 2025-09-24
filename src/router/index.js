@@ -30,10 +30,23 @@ const mainChildrenRoutes = [
     component: () => import("@/views/TestPage.vue"),
   },
   {
+    path: "/index",
+    name: "Index",
+    alias: "/",
+    meta: { title: "Index" },
+    component: () => import("@/views/IndexPage.vue"),
+  },
+  {
     path: "/posts",
     name: "Posts",
     meta: { title: "Posts" },
     component: () => import("@/views/MirakoBlog.vue"),
+  },
+  {
+    path: "/about",
+    name: "About",
+    meta: { title: "About" },
+    component: () => import("@/views/AboutAuthor.vue"),
   },
   {
     path: "/posts/:title",
@@ -72,6 +85,7 @@ const routes = [
     path: "/",
     name: "Homepage",
     meta: { title: "Home" },
+    redirect: "Index",
     component: () => import("@/views/IndexLayout.vue"),
     children: mainChildrenRoutes,
   },
