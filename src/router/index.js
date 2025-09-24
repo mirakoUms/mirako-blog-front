@@ -9,9 +9,9 @@ const adminChildrenRoutes = [
   },
   {
     path: "posts",
-    name: "Posts",
+    name: "AdminPosts",
     component: () => import("@/views/adminPages/admin/postsManage.vue"),
-    meta: { title: "Posts" },
+    meta: { title: "AdminPosts" },
   },
   {
     path: "posts/edit/:id",
@@ -22,18 +22,22 @@ const adminChildrenRoutes = [
   },
 ];
 
-const routes = [
-  { path: "/", name: "homepage", redirect: "/posts" },
-  { path: "/test", name: "test", component: () => import("@/views/TestPage.vue") },
+const mainChildrenRoutes = [
+  {
+    path: "/test",
+    name: "Test",
+    meta: { title: "Test" },
+    component: () => import("@/views/TestPage.vue"),
+  },
   {
     path: "/posts",
-    name: "posts",
+    name: "Posts",
     meta: { title: "Posts" },
     component: () => import("@/views/MirakoBlog.vue"),
   },
   {
     path: "/posts/:title",
-    name: "post",
+    name: "Post",
     meta: { title: "Post Detail" },
     component: () => import("@/components/BlogDetail.vue"),
   },
@@ -61,9 +65,19 @@ const routes = [
     meta: { title: "Tags Detail" },
     component: () => import("@/components/TagDetail.vue"),
   },
+]
+
+const routes = [
+  {
+    path: "/",
+    name: "Homepage",
+    meta: { title: "Home" },
+    component: () => import("@/views/IndexLayout.vue"),
+    children: mainChildrenRoutes,
+  },
   {
     path: "/login",
-    name: "login",
+    name: "Login",
     meta: { title: "Login" },
     component: () => import("@/views/adminPages/loginPage.vue"),
   },
@@ -91,7 +105,9 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.path.startsWith("/admin");
 
   // Check if the route exists
-  const routeExists = routes.some((route) => to.matched.some((match) => match.path === route.path));
+  const routeExists = routes.some((route) =>
+    to.matched.some((match) => match.path === route.path)
+  );
   if (!routeExists) {
     next({ name: "Error", query: { code: 404, message: "Page Not Found" } });
     return;
