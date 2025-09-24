@@ -24,7 +24,8 @@ const router = useRouter();
 const fetchPost = async (title) => {
   try {
     const res = await postsApi.getById(title);
-    if (!res.data) {
+    
+    if (res.status === 404) {
       router.replace({
         name: 'Error',
         query: { code: 404, message: 'Post Not Found' },

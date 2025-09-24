@@ -1,16 +1,30 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+const adminChildrenRoutes = [
+  {
+    path: "profile",
+    name: "Profile",
+    component: () => import("@/views/adminPages/admin/profilePage.vue"),
+    meta: { title: "Profile" },
+  },
+  {
+    path: "posts",
+    name: "Posts",
+    component: () => import("@/views/adminPages/admin/postsManage.vue"),
+    meta: { title: "Posts" },
+  },
+  {
+    path: "posts/edit/:id",
+    name: "Edit",
+    component: () => import("@/components/admin/EditPage.vue"),
+    meta: { title: "Edit" },
+    props: true,
+  },
+];
+
 const routes = [
-  {
-    path: "/",
-    name: "homepage",
-    redirect: "/posts",
-  },
-  {
-    path: "/test",
-    name: "test",
-    component: () => import("@/views/TestPage.vue"),
-  },
+  { path: "/", name: "homepage", redirect: "/posts" },
+  { path: "/test", name: "test", component: () => import("@/views/TestPage.vue") },
   {
     path: "/posts",
     name: "posts",
@@ -58,27 +72,7 @@ const routes = [
     name: "Admin",
     component: () => import("@/views/adminPages/admin/AdminLayout.vue"),
     redirect: "/admin/profile",
-    children: [
-      {
-        path: "profile",
-        name: "Profile",
-        component: () => import("@/views/adminPages/admin/profilePage.vue"),
-        meta: { title: "Profile" },
-      },
-      {
-        path: "posts",
-        name: "Posts",
-        component: () => import("@/views/adminPages/admin/postsManage.vue"),
-        meta: { title: "Posts" },
-      },
-      {
-        path: "posts/edit/:id",
-        name: "Edit",
-        component: () => import("@/components/admin/EditPage.vue"),
-        meta: { title: "Edit" },
-        props: true,
-      },
-    ],
+    children: adminChildrenRoutes,
   },
   {
     path: "/error",
@@ -92,45 +86,42 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach( (to, from, next) => {
+router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("jwt_token");
   const requiresAuth = to.path.startsWith("/admin");
 
   // Check if the route exists
-  if (!routes.some((route) => route.path === to.path || to.matched.length)) {
-    next({
-      name: "Error",
-      query: { code: 404, message: "Page Not Found" },
-    });
+  const routeExists = routes.some((route) => to.matched.some((match) => match.path === route.path));
+  if (!routeExists) {
+    next({ name: "Error", query: { code: 404, message: "Page Not Found" } });
     return;
   }
 
   // Check authentication for admin routes
   if (requiresAuth && !token) {
-    alert("please login first");
+    alert("Please login first");
     next("/login");
+    return;
   } else if (token && to.path === "/login") {
     next("/admin");
-  } else {
-    next();
+    return;
   }
 
   // Set document title
-  if (to.meta && to.meta.title) {
-    if (to.name === "post" && to.params.title) {
-      to.meta.title = `${to.params.title}`;
-    } else if (to.name === "Category" && to.params.categoryName) {
-      to.meta.title = `${to.params.categoryName}`;
-    } else if (to.name === "Tag" && to.params.tagName) {
-      to.meta.title = `${to.params.tagName}`;
-    }
-    document.title = `Mirako's Blog - ${to.meta.title}`;
+  const title = to.meta?.title;
+  if (title) {
+    const dynamicTitle =
+      (to.name === "post" && to.params.title) ||
+      (to.name === "Category" && to.params.categoryName) ||
+      (to.name === "Tag" && to.params.tagName);
+    document.title = `Mirako's Blog - ${dynamicTitle || title}`;
   } else {
     document.title = "Mirako's Blog";
   }
 
   // Scroll to top on route change
   window.scrollTo(0, 0);
+  next();
 });
 
 export default router;

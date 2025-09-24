@@ -18,8 +18,7 @@ const postsApi = {
       const res = await api.get(`/posts/${id}`);
       return res.data;
     } catch (err) {
-      console.error(`获取文章失败 (id=${id})：`, err.message);
-      return null;
+      return err.response;
     }
   },
 
