@@ -7,7 +7,7 @@
         </div>
 
         <div class="nav-container-mobile-menu" @click="isMenuOpen = !isMenuOpen" v-if="isMobile">
-            <span>Menu</span>
+            <span>{{ router.currentRoute.value.name === 'Index' ? 'Home' : router.currentRoute.value.name }}</span>
             <div class="nav-container-mobile-menu-icon" :class="{ open: isMenuOpen }">
                 <span></span>
                 <span></span>
