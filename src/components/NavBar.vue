@@ -1,8 +1,9 @@
 <template>
     <nav class="nav">
         <div class="nav-container" v-if="!isMobile">
-            <router-link v-for="route in childRoutes" :key="route.name" :to="route.path" class="nav-link" 
-            :class="{ active: route.name === router.currentRoute.value.name || (route.name === 'Homepage' && router.currentRoute.value.name === 'Index') }">{{ route.meta.title }}</router-link>
+            <router-link v-for="route in childRoutes" :key="route.name" :to="route.path" class="nav-link"
+                :class="{ active: route.name === router.currentRoute.value.name || (route.name === 'Homepage' && router.currentRoute.value.name === 'Index') }">{{
+                    route.meta.title }}</router-link>
         </div>
 
         <div class="nav-container-mobile-menu" @click="isMenuOpen = !isMenuOpen" v-if="isMobile">
@@ -84,8 +85,7 @@ onMounted(() => {
     width: 92vw;
     height: 39px;
     margin: 0 auto;
-    gap: 3px;
-
+    position: relative;
     border-radius: 8px;
     align-items: center;
 
@@ -125,6 +125,9 @@ onMounted(() => {
     justify-content: space-between;
     overflow: hidden;
     cursor: pointer;
+    position: absolute;
+    padding: 1rem;
+    right: 0;
 }
 
 .nav-container-mobile-menu-icon span {
