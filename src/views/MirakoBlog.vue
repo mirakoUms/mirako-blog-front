@@ -2,7 +2,7 @@
   <div>
     <h1>文章列表</h1>
 
-    <ul>
+    <ul v-if="posts.length > 0">
       <li v-for="item in posts" :key="item.id">
         <router-link :to="`/posts/${item.id}`">{{ item.title }}</router-link>
         &nbsp;
@@ -16,10 +16,14 @@
       </li>
     </ul>
 
+    <p v-else-if="isLoading">加载中...</p>
+
+    <p v-else>没有文章</p>
+
     <div style="margin-top: 10px;">
       <button @click="prevPage" :disabled="page === 1">上一页</button>
       <span>第 {{ page }} 页</span>
-      <button @click="nextPage" :disabled="page === totalPages">下一页</button>
+      <button @click="nextPage" :disabled="page === totalPages || totalPages === 0">下一页</button>
     </div>
   </div>
 </template>
@@ -27,25 +31,33 @@
 <script setup>
 import postsApi from '../api/post';
 import { ref, onMounted } from 'vue';
+import { startProgress, doneProgress } from "../utils/nprogress";
 
 const posts = ref([]);
 const page = ref(1);
 const limit = ref(5);
 const totalPages = ref(1);
+const isLoading = ref(false);
 
 const fetchPosts = async () => {
   try {
+    isLoading.value = true;
     const response = await postsApi.getAll(page.value, limit.value);
-    posts.value = response.data;
+    const data = response?.data ?? [];
+    posts.value = data;
+    return response;
   } catch (err) {
     console.error(err);
+  } finally {
+    isLoading.value = false;
   }
 };
 
 const fetchTotalPages = async () => {
   try {
-    const res = await postsApi.getTotalPosts();
-    totalPages.value = Math.ceil(res.count / limit.value);
+    const response = await postsApi.getTotalPosts();
+    totalPages.value = Math.ceil(response.count / limit.value);
+    return response;
   } catch (err) {
     console.error(err);
   }
@@ -65,8 +77,10 @@ const nextPage = () => {
   }
 };
 
-onMounted(async () => {
-  await fetchTotalPages();
-  fetchPosts();
+onMounted(() => {
+  startProgress();
+  Promise.all([fetchTotalPages(), fetchPosts()])
+    .catch((err) => console.error(err))
+    .finally(() => { doneProgress(); });
 });
 </script>

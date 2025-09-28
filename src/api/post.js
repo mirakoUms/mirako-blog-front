@@ -3,12 +3,12 @@ import api from "./index";
 const postsApi = {
   async getAll(page, limit) {
     try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
       const res = await api.get("/posts", {
         params: { page, limit },
       });
       return res.data;
     } catch (err) {
-      console.error("获取所有文章失败：", err.message);
       return null;
     }
   },

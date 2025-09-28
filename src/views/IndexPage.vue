@@ -1,27 +1,18 @@
 <template>
-    <div class="index-page">
-        <h1>Welcome to Mirako Blog</h1>
-        <p>Your go-to place for the latest updates and articles.</p>
+    <div class="homepage-container">
+        <h1>Welcome to the Index Page</h1>
+        <p>This is the main landing page of the application.</p>
+
     </div>
 </template>
 
 <script>
+import "../assets/css/front/homepage.css"
 export default {
     name: "IndexPage",
-};
+}
 </script>
 
 <style scoped>
-.index-page {
-    text-align: center;
-    margin-top: 50px;
-}
 
-.index-page h1 {
-    font-size: 2.5rem;
-}
-
-.index-page p {
-    font-size: 1.2rem;
-}
 </style>

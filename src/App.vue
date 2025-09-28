@@ -1,14 +1,15 @@
 <template>
-  <transition name="fade" mode="out-in">
-    <router-view />
-  </transition>
+  <router-view />
 </template>
 
 <style>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to {
+
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>
